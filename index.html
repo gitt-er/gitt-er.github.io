@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Blog</title>
+<style>
+  :root{
+    --bg:#0b0f17;
+    --card:#111827;
+    --muted:#9ca3af;
+    --text:#e5e7eb;
+    --accent:#6366f1;
+    --border:#1f2937;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+
+  body{
+    background:radial-gradient(circle at top, #111827, var(--bg));
+    color:var(--text);
+    min-height:100vh;
+  }
+
+  header{
+    padding:60px 20px 30px;
+    text-align:center;
+  }
+
+  header h1{
+    font-size:42px;
+    letter-spacing:-1px;
+  }
+
+  header p{
+    color:var(--muted);
+    margin-top:10px;
+  }
+
+  .container{
+    max-width:1000px;
+    margin:0 auto;
+    padding:20px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:18px;
+  }
+
+  .card{
+    background:linear-gradient(180deg, #111827, #0f172a);
+    border:1px solid var(--border);
+    padding:18px;
+    border-radius:16px;
+    cursor:pointer;
+    transition:transform .2s ease, border .2s ease;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .card:hover{
+    transform:translateY(-6px);
+    border-color:#374151;
+  }
+
+  .tag{
+    font-size:11px;
+    color:var(--accent);
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+
+  .card h2{
+    margin-top:10px;
+    font-size:18px;
+  }
+
+  .card p{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  /* modal */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+
+  .modal{
+    background:var(--card);
+    border:1px solid var(--border);
+    max-width:700px;
+    width:100%;
+    border-radius:18px;
+    padding:22px;
+    animation:pop .2s ease;
+  }
+
+  @keyframes pop{
+    from{transform:scale(.9);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+  }
+
+  .modal h2{
+    margin-bottom:10px;
+  }
+
+  .modal pre{
+    white-space:pre-wrap;
+    color:#d1d5db;
+    line-height:1.6;
+    font-size:14px;
+  }
+
+  .close{
+    margin-top:20px;
+    background:var(--accent);
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+    float:right;
+  }
+
+  footer{
+    text-align:center;
+    padding:40px;
+    color:var(--muted);
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>My Thoughts</h1>
+  <p>Tech, systems, and ideas that shape how we think and build</p>
+</header>
+
+<div class="container">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="title"></h2>
+    <div class="tag" id="tag"></div>
+    <pre id="content"></pre>
+    <button class="close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<footer>
+  Built with pure HTML/CSS/JS • GitHub Pages ready
+</footer>
+
+<script>
+const posts = [
+  {
+    title: "The Myth of Productivity: Why Doing Less Wins More",
+    tag: "Life Theory",
+    excerpt: "We think productivity is about doing more, but real leverage comes from removing noise.",
+    content: `Productivity is often mistaken for volume of work.
+
+In reality, high performers optimize for clarity, not activity.
+
+Core ideas:
+- Reduce decision fatigue
+- Remove unnecessary tasks
+- Focus on compounding work
+
+Less, but better, always scales further.`
+  },
+  {
+    title: "System Design Thinking for Everyday Life",
+    tag: "Tech",
+    excerpt: "Your life behaves like a distributed system more than you think.",
+    content: `Think of your life like a system:
+
+Inputs: messages, tasks, responsibilities
+CPU: attention
+Memory: cognitive load
+
+Principles:
+- Backpressure → say no when overloaded
+- Caching → reuse decisions
+- Fault tolerance → recover from failure quickly
+
+Once you see systems, chaos becomes structure.`
+  },
+  {
+    title: "Consistency Beats Motivation",
+    tag: "Behavior",
+    excerpt: "Motivation is unreliable. Systems are not.",
+    content: `Motivation is emotional. Consistency is structural.
+
+Build systems instead of relying on mood:
+- Minimum viable effort
+- Daily baseline habits
+- Environment design
+
+The compounding effect of consistency beats bursts of motivation every time.`
+  }
+];
+
+const grid = document.getElementById("grid");
+const overlay = document.getElementById("overlay");
+const title = document.getElementById("title");
+const tag = document.getElementById("tag");
+const content = document.getElementById("content");
+
+function openPost(post){
+  title.innerText = post.title;
+  tag.innerText = post.tag;
+  content.innerText = post.content;
+  overlay.style.display = "flex";
+}
+
+function closeModal(){
+  overlay.style.display = "none";
+}
+
+posts.forEach(p=>{
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `
+    <div class="tag">${p.tag}</div>
+    <h2>${p.title}</h2>
+    <p>${p.excerpt}</p>
+  `;
+  div.onclick = ()=>openPost(p);
+  grid.appendChild(div);
+});
+
+overlay.onclick = (e)=>{
+  if(e.target === overlay) closeModal();
+};
+</script>
+
+</body>
+</html>
