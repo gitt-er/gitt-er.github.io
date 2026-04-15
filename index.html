@@ -294,6 +294,183 @@ Great builders remove:
 Simplicity is not minimalism.
 It is *control over entropy*.
 `
+  }, {
+    title: "React Is Not a UI Library — It’s a State Machine",
+    tag: "React",
+    excerpt: "Once you see React as state transitions, UI design becomes predictable.",
+    content: `
+Most developers think React is about components.
+
+But React is fundamentally about state transitions over time.
+
+UI = f(state)
+
+Key shift in thinking:
+- Components are projections of state, not “units of UI”
+- Re-renders are not events—they are consequences
+
+Design principles:
+- Minimize derived state duplication
+- Keep state as close as possible to where it's used
+- Prefer deterministic rendering over imperative UI updates
+
+When state is clean:
+- UI becomes predictable
+- Bugs become traceable
+- Refactors become mechanical instead of emotional
+`
+  },
+
+  {
+    title: "Frontend Architecture: Stop Organizing by File Type",
+    tag: "Architecture",
+    excerpt: "Folders like components/, hooks/, utils/ create hidden coupling.",
+    content: `
+Most frontend codebases degrade because they are organized by type, not domain.
+
+Bad structure:
+- components/
+- hooks/
+- utils/
+
+This creates invisible coupling across features.
+
+Better approach: domain-first structure
+
+Example:
+- checkout/
+- dashboard/
+- profile/
+
+Inside each domain:
+- UI components
+- hooks
+- state logic
+- API calls
+
+Why this works:
+- Changes stay localized
+- Ownership is clearer
+- Refactoring becomes isolated
+
+Architecture is not about order.
+It’s about reducing blast radius.
+`
+  },
+
+  {
+    title: "The Cost of Re-Renders in React Is Not What You Think",
+    tag: "Performance",
+    excerpt: "Most performance problems are architectural, not technical.",
+    content: `
+React re-renders are often misunderstood as the problem.
+
+The real issue is *uncontrolled propagation of state changes*.
+
+Common mistake:
+- Overusing global state
+- Passing unstable props
+- Recomputing expensive derived values in render
+
+Better mental model:
+- Treat state updates like events in a graph
+- Each update has a propagation cost
+
+Optimizations:
+- Memoization only after identifying real hotspots
+- Split state by update frequency
+- Isolate volatile components from stable ones
+
+Premature optimization is bad.
+But premature architectural neglect is worse.
+`
+  },
+
+  {
+    title: "CSS Scaling Problem: Why Utility-First Won",
+    tag: "Styling",
+    excerpt: "CSS fails when teams rely on implicit structure.",
+    content: `
+CSS breaks down when implicit rules outgrow human memory.
+
+Traditional CSS problems:
+- Naming collisions
+- Unpredictable overrides
+- Hidden specificity wars
+
+Utility-first systems (like Tailwind) win because:
+- They remove naming decisions
+- They enforce consistency by construction
+- They shift styling from “designing classes” to “composing systems”
+
+Tradeoff:
+- Less abstraction
+- More explicit markup
+
+But explicit systems scale better in teams:
+- Less mental overhead
+- Faster onboarding
+- Predictable rendering behavior
+`
+  },
+
+  {
+    title: "Design Systems Are Not Component Libraries",
+    tag: "Design Systems",
+    excerpt: "A design system is a constraint system, not a UI kit.",
+    content: `
+Most teams mistake design systems for component libraries.
+
+That’s incorrect.
+
+A real design system defines:
+- spacing rules
+- typography scale
+- color semantics
+- interaction patterns
+
+Components are just outputs of those rules.
+
+If your system has:
+- buttons
+- modals
+- inputs
+
+but no underlying constraints,
+you don’t have a design system.
+
+You have a UI collection.
+
+Strong systems:
+- reduce design decisions
+- enforce consistency automatically
+- scale across teams without coordination overhead
+`
+  },
+
+  {
+    title: "State Colocation Is the Secret to Scalable React Apps",
+    tag: "React",
+    excerpt: "Global state is often a symptom of poor structure.",
+    content: `
+One of the most common scaling failures in React apps:
+overusing global state.
+
+Better approach: colocation.
+
+Rule of thumb:
+- If only one feature uses it → keep it local
+- If multiple distant features use it → consider global state
+
+Why colocation works:
+- reduces accidental coupling
+- simplifies debugging
+- improves reusability
+
+Global state should be the exception, not the default.
+
+Most apps scale better when state stays where it is born.
+`
   }
 ];
 
